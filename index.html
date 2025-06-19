@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Atidaryti Aplanką</title>
+  <script src="https://p.trellocdn.com/power-up.min.js"></script>
+</head>
+<body>
+<script>
+window.TrelloPowerUp.initialize({
+  'card-buttons': function(t) {
+    return t.card('desc')
+      .get('desc')
+      .then(function(desc) {
+        if (!desc) return [];
+        const regex = /open-folder:\/\/[^\s"]+/g;
+        const matches = desc.match(regex);
+        if (!matches) return [];
+
+        return matches.map(function(link) {
+          return {
+            icon: 'https://cdn-icons-png.flaticon.com/512/716/716784.png',
+            text: 'Atidaryti aplanką',
+            callback: function(t) {
+              window.open(link, '_blank');
+              return t.closePopup();
+            }
+          };
+        });
+      });
+  }
+});
+</script>
+</body>
+</html>
