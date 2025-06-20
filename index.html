@@ -7,11 +7,12 @@
 <body>
 <script>
 window.TrelloPowerUp.initialize({
-  'card-buttons': function(t) {
+  'card-buttons': function(t, options) {
     return t.card('desc')
       .get('desc')
       .then(function(desc) {
         if (!desc) return [];
+
         const regex = /open-folder:\/\/[^\s"]+/g;
         const matches = desc.match(regex);
         if (!matches) return [];
