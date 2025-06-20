@@ -13,25 +13,21 @@ window.TrelloPowerUp.initialize({
       .then(function(desc) {
         if (!desc) return [];
 
-        // Rasti visus open-folder:// įrašus iki eilutės pabaigos (įskaitant tarpus)
-        const regex = /open-folder:\/\/[^\n"]+/g;
+        // Rasti visas open-folder:// nuorodas iki eilutės pabaigos, įskaitant tarpus
+        const regex = /open-folder:\/\/.+/gi;
         const matches = desc.match(regex);
         if (!matches) return [];
 
         return matches.map(function(linkRaw) {
-          // Pakeisti \ į / naršyklės suderinamumui
-          const sanitizedLink = linkRaw.replace(/\\/g, '/');
+          // Pašalinti tarpus pradžioje/ pabaigoje ir pakeisti \ į /
+          const sanitizedLink = linkRaw.trim().replace(/\\/g, '/');
 
           return {
             icon: 'https://cdn-icons-png.flaticon.com/512/716/716784.png',
             text: 'Atidaryti aplanką',
             callback: function(t) {
-              // Sukurti nematomą iframe ir įkelti nuorodą
-              const iframe = document.createElement('iframe');
-              iframe.style.display = 'none';
-              iframe.src = sanitizedLink;
-              document.body.appendChild(iframe);
-
+              // Atidaryti nuorodą per naršyklės location.href
+              window.location.href = sanitizedLink;
               return t.closePopup();
             }
           };
