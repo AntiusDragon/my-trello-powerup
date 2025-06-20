@@ -13,20 +13,23 @@ window.TrelloPowerUp.initialize({
       .then(function(desc) {
         if (!desc) return [];
 
-        // Rask visas nuorodas su open-folder:// iki ENTER (kad įtrauktų ir tarpus)
-        const regex = /open-folder:\/\/[^\n\r]+/gi;
+        // 1️⃣ Rask visas nuorodas (su tarpais)
+        const regex = /open-folder:\/\/.+/gi;
         const matches = desc.match(regex);
         if (!matches) return [];
 
         return matches.map(function(linkRaw) {
+          // 2️⃣ Išvalyk tikrą nuorodą (be ENTER gale ir \ -> /)
           const sanitizedLink = linkRaw
-            .trim()                  // nuima tarpus gale
-            .replace(/\\/g, '/');   // pakeičia \ į /
+            .trim()                  // panaikina ENTER gale
+            .replace(/\\/g, '/');   // keičia \ į /
 
           return {
             icon: 'https://cdn-icons-png.flaticon.com/512/716/716784.png',
             text: 'Atidaryti aplanką',
             callback: function(t) {
+              // 3️⃣ Testas: galima laikinai įjungti alert, jei reikia
+              // alert("Atidaromas kelias:\n" + sanitizedLink);
               window.location.href = sanitizedLink;
               return t.closePopup();
             }
