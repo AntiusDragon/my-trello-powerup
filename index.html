@@ -14,7 +14,7 @@ window.TrelloPowerUp.initialize({
         if (!desc) return [];
 
         // Rasti visus open-folder:// įrašus
-        const regex = /open-folder:\/\/[^\s"]+/g;
+        const regex = /<open-folder:\/\/.*?>/gi;
         const matches = desc.match(regex);
         if (!matches) return [];
 
