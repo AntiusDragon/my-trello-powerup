@@ -12,19 +12,26 @@ window.TrelloPowerUp.initialize({
       .get('desc')
       .then(function(desc) {
         if (!desc) return [];
+
+        // Rasti visus open-folder:// įrašus
         const regex = /open-folder:\/\/[^\s"]+/g;
         const matches = desc.match(regex);
         if (!matches) return [];
 
-        return matches.map(function(link) {
+        return matches.map(function(linkRaw) {
+          // Pakeisti \ į / naršyklės suderinamumui
+          const sanitizedLink = linkRaw.replace(/\\/g, '/');
+
           return {
             icon: 'https://cdn-icons-png.flaticon.com/512/716/716784.png',
             text: 'Atidaryti aplanką',
             callback: function(t) {
+              // Sukurti nematomą iframe ir įkelti nuorodą
               const iframe = document.createElement('iframe');
               iframe.style.display = 'none';
-              iframe.src = link;
+              iframe.src = sanitizedLink;
               document.body.appendChild(iframe);
+
               return t.closePopup();
             }
           };
