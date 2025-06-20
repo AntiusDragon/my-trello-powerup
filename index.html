@@ -12,7 +12,7 @@ window.TrelloPowerUp.initialize({
       .get('desc')
       .then(function(desc) {
         if (!desc) return [];
-        const regex = /folder:\/\/[^\s"]+/g;
+        const regex = /open-folder:\/\/[^\s"]+/g;
         const matches = desc.match(regex);
         if (!matches) return [];
 
