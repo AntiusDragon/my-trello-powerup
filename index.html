@@ -21,7 +21,10 @@ window.TrelloPowerUp.initialize({
             icon: 'https://cdn-icons-png.flaticon.com/512/716/716784.png',
             text: 'Atidaryti aplanką',
             callback: function(t) {
-              window.open(link, '_blank');
+              const iframe = document.createElement('iframe');
+              iframe.style.display = 'none';
+              iframe.src = link;
+              document.body.appendChild(iframe);
               return t.closePopup();
             }
           };
