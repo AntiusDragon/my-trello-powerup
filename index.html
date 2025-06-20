@@ -13,16 +13,15 @@ window.TrelloPowerUp.initialize({
       .then(function(desc) {
         if (!desc) return [];
 
-        // Match: <open-folder://...>
-        const regex = /<open-folder:\/\/.*?>/gi;
+        // Rask visas nuorodas su open-folder:// iki ENTER (kad įtrauktų ir tarpus)
+        const regex = /open-folder:\/\/[^\n\r]+/gi;
         const matches = desc.match(regex);
         if (!matches) return [];
 
         return matches.map(function(linkRaw) {
-          // Pašaliname < > ir pakeičiame \ į /
           const sanitizedLink = linkRaw
-            .replace(/^<|>$/g, '')
-            .replace(/\\/g, '/');
+            .trim()                  // nuima tarpus gale
+            .replace(/\\/g, '/');   // pakeičia \ į /
 
           return {
             icon: 'https://cdn-icons-png.flaticon.com/512/716/716784.png',
@@ -36,7 +35,6 @@ window.TrelloPowerUp.initialize({
       });
   }
 });
-
 </script>
 </body>
 </html>
