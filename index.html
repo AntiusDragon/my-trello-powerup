@@ -13,25 +13,22 @@ window.TrelloPowerUp.initialize({
       .then(function(desc) {
         if (!desc) return [];
 
-        // Rasti visus open-folder:// įrašus
+        // Match: <open-folder://...>
         const regex = /<open-folder:\/\/.*?>/gi;
         const matches = desc.match(regex);
         if (!matches) return [];
 
         return matches.map(function(linkRaw) {
-          // Pakeisti \ į / naršyklės suderinamumui
-          const sanitizedLink = linkRaw.replace(/\\/g, '/');
+          // Pašaliname < > ir pakeičiame \ į /
+          const sanitizedLink = linkRaw
+            .replace(/^<|>$/g, '')
+            .replace(/\\/g, '/');
 
           return {
             icon: 'https://cdn-icons-png.flaticon.com/512/716/716784.png',
             text: 'Atidaryti aplanką',
             callback: function(t) {
-              // Sukurti nematomą iframe ir įkelti nuorodą
-              const iframe = document.createElement('iframe');
-              iframe.style.display = 'none';
-              iframe.src = sanitizedLink;
-              document.body.appendChild(iframe);
-
+              window.location.href = sanitizedLink;
               return t.closePopup();
             }
           };
@@ -39,6 +36,7 @@ window.TrelloPowerUp.initialize({
       });
   }
 });
+
 </script>
 </body>
 </html>
