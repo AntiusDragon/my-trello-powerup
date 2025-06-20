@@ -12,21 +12,16 @@ window.TrelloPowerUp.initialize({
       .get('desc')
       .then(function(desc) {
         if (!desc) return [];
-
-        // Ieskom nuorodų, pvz. `f:\\serveris\apskaita\...`
-        const regex = /`f:\\\\[^\s`]+`/g;
+        const regex = /f:\/\/[^\s"]+/g;
         const matches = desc.match(regex);
         if (!matches) return [];
 
-        return matches.map(function(raw) {
-          // Pašalinam kabutes/apvalkalą
-          const cleanPath = raw.replace(/`/g, '');
+        return matches.map(function(link) {
           return {
             icon: 'https://cdn-icons-png.flaticon.com/512/716/716784.png',
             text: 'Atidaryti aplanką',
             callback: function(t) {
-              // Paleidžiam f:\\... kaip protokolą
-              window.open(cleanPath, '_blank');
+              window.open(link, '_blank');
               return t.closePopup();
             }
           };
